@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  serviceregistry:
+    container_name: serviceregistry
+    image: pblgllgs/serviceregistry-dcb:0.0.1
+    ports:
+      - "8761:8761"
+    networks:
+      - dcb
+
+  configserver:
+    container_name: configserver
+    image: pblgllgs/configserver-dcb:0.0.1
+    ports:
+      - "9296:9296"
+    networks:
+      - dcb
+    environment:
+      EUREKA_SERVER_ADDRESS: http://serviceregistry:8761/eureka
+    healthcheck:
+      test: ["CMD", "curl","-f", "http://configserver:9296/actuator/healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - serviceregistry
+
+  cloudgateway:
+    container_name: cloudgateway
+    image: pblgllgs/cloudgateway-dcb:0.0.1
+    ports:
+      - "9090:9090"
+    environment:
+      EUREKA_SERVER_ADDRESS: http://serviceregistry:8761/eureka
+      CONFIG_SERVER_URL: configserver
+    networks:
+      - dcb
+    depends_on:
+      configserver:
+        condition: service_healthy
+
+networks:
+  dcb:
+    
