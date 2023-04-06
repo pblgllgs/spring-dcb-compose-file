@@ -14,10 +14,6 @@ spec:
       containers:
       - name: product-service-app
         image: pblgllgs/productservice-dcb:latest
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 8080
         env:
@@ -31,6 +27,11 @@ spec:
               configMapKeyRef:
                 key: config_url
                 name: config-cm
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                key: hostname
+                name: mysql-cm
 ---
 apiVersion: v1
 kind: Service

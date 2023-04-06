@@ -13,11 +13,7 @@ spec:
     spec:
       containers:
       - name: config-server-app
-        image: pblgllgs/configserver:latest
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        image: pblgllgs/configserver-dcb:latest
         ports:
         - containerPort: 9296
         env:

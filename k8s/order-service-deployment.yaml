@@ -14,10 +14,6 @@ spec:
       containers:
       - name: order-service-app
         image: pblgllgs/orderservice-dcb:latest
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
         ports:
         - containerPort: 8082
         env:
@@ -31,6 +27,11 @@ spec:
               configMapKeyRef:
                 key: config_url
                 name: config-cm
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                key: hostname
+                name: mysql-cm
 ---
 apiVersion: v1
 kind: Service
