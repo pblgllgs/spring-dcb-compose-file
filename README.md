@@ -35,3 +35,7 @@ k delete -f zipkin-deployment.yaml
 ```$bash
 kubectl apply -f k8s
 ```
+
+```$bash
+kubectl delete -f k8s
+```
